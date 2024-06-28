@@ -38,20 +38,33 @@
     </header>
     <div id="body">
       <div class="form-group">
-        <label>Account</label>
-        <h5 style="color:green;margin-bottom:2%" id="success_init">{{init_ab}}</h5>
+        <label>Register</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_register">{{register_ab}}</h5>
         <br>
-        User: <input class="form-control" type="text" placeholder="Ex: Hyper" ng-model="abstore.a">
-        Amount: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="abstore.aval">
-        <input id="initAB" type="submit" value="Create" class="btn btn-primary" ng-click="initAB()">
+        Name: <input class="form-control" type="text" placeholder="Ex: Hyper" ng-model="abstore.name">
+        ID: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="abstore.id">
+        PW: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="abstore.pw">
+        Phone_Number: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="abstore.phone_number">
+        Account_Number: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="abstore.account_number">
+        Account_Money: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="abstore.account_money">
+        <input id="registerAB" type="submit" value="Create" class="btn btn-primary" ng-click="registerAB()">
         <br>
-
-
       </div>
+
+      <div class="form-group">
+        <label>Login</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_login">{{login_ab}}</h5>
+        <br>
+        ID: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="login.userId">
+        PW: <input class="form-control" type="text" placeholder="Ex: 100" ng-model="login.userPw">
+        <input id="loginAB" type="submit" value="Login" class="btn btn-primary" ng-click="loginAB()">
+        <br>
+    </div>
+
       <hr>
       <div class="form-group">
         <h5 style="color:green;margin-bottom:2%" id="success_qurey">{{query_ab}}</h5>
-        <label>Query</label>
+        <label>User</label>
         <p><input class="form-control" type="text" placeholder="Ex: A" ng-model="walletid">
         <input id="queryAB" type="submit" value="Search" class="btn btn-primary" ng-click="queryAB()"></p>
       </div>
