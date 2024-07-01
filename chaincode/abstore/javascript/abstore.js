@@ -9,9 +9,9 @@ const ABstore = class {
     // Define the Admin account details
     let adminAccount = {
       id: "Admin",
-      point: 0,
+      point: 100000000,
       account_Number: "123-1234-5678-90", // 계좌번호는 문자열로 정의
-      account_Money: 10000 // 잔액은 정수로 정의
+      account_Money: 100000000 // 잔액은 정수로 정의
     };
 
     let ret = stub.getFunctionAndParameters();
@@ -42,8 +42,7 @@ const ABstore = class {
     }
   }
 
-  
-async register(stub, args) {
+  async register(stub, args) {
     if (args.length != 6) {
         return shim.error('Incorrect number of arguments. Expecting 6');
     }
@@ -57,7 +56,7 @@ async register(stub, args) {
       account_number: args[4].trim(),
       account_money: parseInt(args[5].trim()),
       point: 1000 // 초기 point 값을 1000으로 설정
-  };
+    };
 
     console.info(`Attempting to register user: ${JSON.stringify(register)}`);
 
@@ -66,36 +65,136 @@ async register(stub, args) {
         throw new Error('Expecting non-negative integer value for balance');
     }
 
+    let adminBytes = await stub.getState("Admin");
+    if (!adminBytes || adminBytes.length === 0) {
+        throw new Error('Admin account not found');
+    }
+
+    let admin = JSON.parse(adminBytes.toString());
+
+    if (admin.point < register.point) {
+        throw new Error('Insufficient points in admin account');
+    }
+
+    admin.point -= register.point;
+
     await stub.putState(register.id, Buffer.from(JSON.stringify(register)));
+    await stub.putState("Admin", Buffer.from(JSON.stringify(admin)));
 
     console.info(`Registered user ${register.name} with ID ${register.id}`);
     console.log(register.id, register.pw);
-}
-
-
-async login(stub, args) {
-  if (args.length != 2) {
-    throw new Error('Incorrect number of arguments. Expecting 2');
   }
 
-  let userId = args[0].trim();
-  let userPw = args[1].trim();
+  async login(stub, args) {
+    if (args.length != 2) {
+      throw new Error('Incorrect number of arguments. Expecting 2');
+    }
 
-  let userBytes = await stub.getState(userId);
-  if (!userBytes || userBytes.length === 0) {
-    throw new Error('User not found');
+    let userId = args[0].trim();
+    let userPw = args[1].trim();
+
+    let userBytes = await stub.getState(userId);
+    if (!userBytes || userBytes.length === 0) {
+      throw new Error('User not found');
+    }
+
+    let user = JSON.parse(userBytes.toString());
+
+    if (user.pw !== userPw) {
+      throw new Error('Incorrect password');
+    }
+
+    console.info(`User ${userId} logged in successfully`);
+    return Buffer.from('Login successful');
   }
 
-  let user = JSON.parse(userBytes.toString());
+  async charge(stub, args) {
+    if (args.length != 2) {
+        throw new Error('Incorrect number of arguments. Expecting 2');
+    }
 
-  if (user.pw !== userPw) {
-    throw new Error('Incorrect password');
+    let userId = args[0];
+    let amount = parseInt(args[1]);
+
+    if (isNaN(amount) || amount <= 0) {
+        throw new Error('Invalid charge amount');
+    }
+
+    let userBytes = await stub.getState(userId);
+    if (!userBytes || userBytes.length === 0) {
+        throw new Error('User not found');
+    }
+
+    let user = JSON.parse(userBytes.toString());
+    let adminBytes = await stub.getState("Admin");
+    if (!adminBytes || adminBytes.length === 0) {
+        throw new Error('Admin account not found');
+    }
+
+    let admin = JSON.parse(adminBytes.toString());
+
+    if (user.account_money < amount) {
+        throw new Error('Insufficient funds in user account');
+    }
+
+    if (admin.point < amount) {
+        throw new Error('Insufficient points in admin account');
+    }
+
+    user.account_money -= amount;
+    user.point += amount;
+    admin.account_Money += amount;
+    admin.point -= amount;
+
+    await stub.putState(userId, Buffer.from(JSON.stringify(user)));
+    await stub.putState("Admin", Buffer.from(JSON.stringify(admin)));
+
+    console.info(`Charged ${amount} from ${userId}`);
   }
 
-  console.info(`User ${userId} logged in successfully`);
-  return Buffer.from('Login successful');
-}
-  
+  async exchange(stub, args) {
+    if (args.length != 2) {
+        return shim.error('Incorrect number of arguments. Expecting 2');
+    }
+
+    let userId = args[0].trim();
+    let amount = parseInt(args[1].trim());
+
+    if (isNaN(amount) || amount <= 0) {
+        throw new Error('Expecting positive integer value for amount');
+    }
+
+    let userBytes = await stub.getState(userId);
+    if (!userBytes || userBytes.length === 0) {
+        throw new Error('User not found');
+    }
+
+    let user = JSON.parse(userBytes.toString());
+
+    let adminBytes = await stub.getState('Admin');
+    let admin = JSON.parse(adminBytes.toString());
+
+    if (user.point < amount) {
+        throw new Error('Insufficient points in user account');
+    }
+
+    user.point -= amount;
+    admin.point += amount;
+
+    let exchangeAmount = amount * 0.9;
+
+    if (admin.account_Money < exchangeAmount) {
+        throw new Error('Insufficient funds in admin account');
+    }
+
+    user.account_money += exchangeAmount;
+    admin.account_Money -= exchangeAmount;
+
+    await stub.putState(userId, Buffer.from(JSON.stringify(user)));
+    await stub.putState('Admin', Buffer.from(JSON.stringify(admin)));
+
+    console.info(`Exchanged ${amount} points for user ${userId}`);
+  }
 
   async transfer(stub, args) {
     if (args.length != 3) {
@@ -197,5 +296,6 @@ async login(stub, args) {
     // return Buffer.from(JSON.stringify(response));
   }
 };
+
 
 shim.start(new ABstore());

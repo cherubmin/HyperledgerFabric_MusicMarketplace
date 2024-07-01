@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext');
+
+html {
+  position: relative;
+  overflow-x: hidden !important;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  color: #324e63;
+  background: #f7f9fc;
+  line-height: 1.6;
+}
+
+a, a:hover {
+  text-decoration: none;
+}
+
+.navbar {
+  background-color: #4491a8;
+  border: none;
+  border-radius: 0;
+}
+
+.navbar-brand {
+  color: #fff !important;
+}
+
+.navbar-nav>li>a {
+  color: #fff !important;
+}
+
+.navbar-nav>li>a:hover {
+  background-color: #367a90 !important;
+}
+
+.footer {
+  background-color: #4491a8;
+  padding: 20px 0;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.container {
+  padding: 50px 20px;
+}
+
+.profile-card {
+  width: 100%;
+  margin: 20px 0;
+  padding: 20px;
+  box-shadow: 0 8px 60px -10px rgba(13, 28, 39, 0.6);
+  background: #fff;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.profile-card__img {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0px 5px 50px 0px rgba(68, 145, 168, 0.5), 0px 0px 0px 7px rgba(68, 145, 168, 0.3);
+}
+
+.profile-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-card__cnt {
+  padding: 20px;
+}
+
+.profile-card__name {
+  font-weight: 700;
+  font-size: 24px;
+  color: #4491a8;
+  margin-bottom: 10px;
+}
+
+.profile-card__txt {
+  font-size: 16px;
+  font-weight: 500;
+  color: #324e63;
+  margin-bottom: 15px;
+}
+
+.profile-card-inf {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.profile-card-inf__item {
+  flex: 1;
+  padding: 10px;
+  min-width: 0;
+}
+
+.profile-card-inf__title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #324e63;
+}
+
+.profile-card-inf__txt {
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.profile-card-ctr {
+  margin-top: 20px;
+}
+
+.profile-card__button {
+  background: none;
+  border: none;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 10px 20px;
+  padding: 10px 20px;
+  min-width: 150px;
+  border-radius: 50px;
+  min-height: 40px;
+  color: #fff;
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.profile-card__button.button--blue {
+  background: linear-gradient(45deg, #4491a8, #367a90);
+  box-shadow: 0 4px 30px rgba(68, 145, 168, 0.4);
+}
+
+.profile-card__button.button--orange {
+  background: linear-gradient(45deg, #4491a8, #367a90);
+  box-shadow: 0 4px 30px rgba(68, 145, 168, 0.35);
+}
+
+.profile-card__button.button--gray {
+  background: #dcdcdc;
+  color: #142029;
+}
+
+.profile-card__button:hover {
+  transform: translateY(-5px);
+}
+
+.profile-card__overlay {
+  display: none;
+}
+
+/* 나의 음원 섹션 스타일 */
+.my-songs {
+  width: 100%;
+  background-color: #e1f1f5;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.my-songs h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #324e63;
+}
+
+.song-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.song {
+  display: flex;
+  align-items: center;
+  width: calc(33.33% - 20px); /* 3개의 카드를 한 줄에 배치 */
+  padding: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.song img {
+  width: 100px; /* 음원 표지 크기 설정 */
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.song-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.song-details p {
+  margin: 5px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #324e63;
+}
+
+.song-details span {
+  font-size: 16px;
+  color: #666;
+}
+
+.add-song {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  background: #dcdcdc;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 48px;
+  color: #4491a8;
+}
+
+.add-song-icon {
+  font-size: 48px;
+}

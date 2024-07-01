@@ -18,11 +18,15 @@ app.controller('AppCtrl', function($scope, appFactory){
        });
    };
    $scope.loginAB = function(){
-        appFactory.loginAB($scope.login, function(data){
-            $scope.login_ab = "login success";
-            $("#success_login").show();
-        });
-    };
+    appFactory.loginAB($scope.login, function(data){
+        if(data == "Login successful"){
+            // 로그인 성공 시 mypage.html로 리디렉션
+            window.location.href = `mainpage.html?userId=${$scope.login.userId}`;
+        }
+        $scope.login_ab = "login success";
+        $("#success_login").show();
+    });
+};
    $scope.queryAB = function(){
         appFactory.queryAB($scope.walletid, function(data){
            $scope.query_ab = data;
@@ -59,17 +63,9 @@ app.factory('appFactory', function($http){
             callback(output)
         });
     }
-    factory.loginAB = function(data, callback){
-        $http.get('/login?userId='+data.userId+'&userPw='+data.userPw).success(function(output){
-            if (output.success) {
-                // 유저 정보를 세션 또는 로컬 저장소에 저장
-                sessionStorage.setItem('user', JSON.stringify(output.user));
-                callback(output);
-                // 마이페이지로 이동
-                window.location.href = '/mypage.html';
-            } else {
-                callback(output);
-            }
+    factory.loginAB = function(data, callback) {
+        $http.get('/login?userId=' + data.userId + '&userPw=' + data.userPw).success(function(output) {
+            callback(output)
         });
     };
     

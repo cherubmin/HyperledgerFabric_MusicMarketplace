@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음원 사이트</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="mainpage.js"></script> <!-- mainpage.js 파일 추가 -->
+    <style>
+        /* 구글 폰트 임포트 */
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+        /* 바디 스타일링 */
+        body {
+            background: #ffffff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* 헤더 스타일링 */
+        header {
+            background-color: #f8f9fa;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        header img {
+          width: 100%; /* 너비 조정 */
+          height: 220px; /* 높이는 자동으로 설정 */
+        }
+
+        /* 메뉴바 스타일링 */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #4491a8;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 50px;
+            text-decoration: none;
+            margin: 0 10px; /* 메뉴바 아이템 사이에 간격 추가 */
+        }
+
+        .navbar a:hover {
+            background-color: #fffdfd;
+            color: black;
+        }
+
+        /* 검색 바 스타일링 */
+        .search-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search {
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .searchTerm {
+            width: 30%;
+            border: 3px solid #00B4CC;
+            border-right: none;
+            padding: 10px;
+            height: 36px;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            color: #9DBFAF;
+        }
+
+        .searchTerm:focus {
+            color: #00B4CC;
+        }
+
+        .searchButton {
+            width: 40px;
+            height: 36px;
+            border: 1px solid #00B4CC;
+            background: #00B4CC;
+            text-align: center;
+            color: #fff;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* 캐러셀과 사용자 정보 컨테이너 스타일링 */
+        .carousel-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            margin: 20px 0;
+        }
+    
+        .carousel {
+            width: 70%;
+            margin-right: 20px; /* 캐러셀과 사용자 정보 사이의 여백 */
+        }
+    
+        /* 캐러셀 이미지 스타일링 */
+        .carousel-inner > .item > img {
+            width: 100%;
+            height: 300px;
+        }
+    
+        /* 사용자 정보 스타일링 */
+        .user-info {
+            width: 25%;
+            text-align: center;
+        }
+    
+        .user-info .card {
+            position: relative;
+            width: 100%;
+            height: 300px; /* 카드 높이 증가 */
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.7s ease-in-out;
+            padding-top: 150px; /* 상단 패딩 추가 */
+        }
+    
+        .banner {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 150px; /* 배너 높이 감소 */
+            background-image: url("https://snap-photos.s3.amazonaws.com/img-thumbs/960w/RQ2Z75PQIN.jpg");
+            background-size: cover;
+            border-bottom: solid 1px lightgrey;
+            transition: all 0.7s ease-in-out;
+        }
+    
+        .photo {
+            position: absolute;
+            top: 100px; /* 사진 위치 조정 */
+            left: 50%;
+            transform: translate(-50%, 0); /* 중앙 정렬 */
+            border-radius: 50%;
+            height: 80px;
+            width: 80px;
+            background-color: white;
+            background-image: url("https://filmshotfreezer.files.wordpress.com/2011/07/untitled-1.jpg");
+            background-size: cover;
+            background-position: 50% 50%;
+            box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+            transition: top 0.7s ease-in-out, background 0.15s ease;
+            z-index: 2;
+        }
+    
+        .card ul {
+            list-style: none;
+            text-align: center;
+            padding-left: 0;
+            margin-top: 30px; /* 텍스트 위치 조정 */
+            font-size: 16px;
+            transition: all 0.7s ease-in-out;
+        }
+    
+        .card ul li {
+            margin-bottom: 10px;
+        }
+
+        /* 그리드 컨테이너 스타일링 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+          
+        .grid-item {
+            text-align: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid #4491a8; /* 파란색 테두리 추가 */
+        }
+
+        .grid-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .grid-item img {
+            width: 80%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 더 강한 그림자 추가 */
+        }
+
+        .grid-item p {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .grid-item button {
+            margin-top: 10px;
+            font-size: 14px;
+            padding: 5px 10px;
+            background-color: #4491a8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .grid-item button:hover {
+            background-color: #367a90;
+        }
+    </style>
+</head>
+<body ng-app="mainApp" ng-controller="MainCtrl">
+    <!-- 헤더 섹션 -->
+    <header>
+        <img src="images/logo.png" alt="음원 사이트">
+    </header>
+
+    <!-- 메뉴바 섹션 -->
+    <div class="navbar">
+        <a href="music_register.html">음원 등록</a>
+        <a href="music_delete.html">음원 삭제</a>
+        <a href="music_search.html">음원 조회</a>
+        <a ng-click="goToMypage()">마이페이지</a>
+    </div>
+
+    <!-- 검색 바 섹션 -->
+    <div class="search-bar">
+        <div class="search">
+            <input type="text" class="searchTerm" placeholder="검색어를 입력하세요">
+            <button class="searchButton">
+                <i class="glyphicon glyphicon-search"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 캐러셀 및 사용자 정보 섹션 -->
+    <div class="carousel-container">
+        <!-- 캐러셀 -->
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- 슬라이드 이미지 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="images/banner1.jpg" alt="First Slide">
+                </div>
+                <div class="item">
+                    <img src="images/banner2.jpg" alt="Second Slide">
+                </div>
+                <div class="item">
+                    <img src="images/banner3.jpg" alt="Third Slide">
+                </div>
+            </div>
+
+            <!-- 좌우 컨트롤 -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        <!-- 사용자 정보 카드 -->
+        <div class="user-info">
+            <div class="card">
+                <div class="photo"></div>
+                <div class="banner"></div>
+                <ul>
+                    <li><strong>ID:</strong> {{user.name}}</li>
+                    <li><strong>포인트:</strong> {{user.point}}</li>
+                </ul>
+                <button class="btn btn-primary" ng-click="goToMypage()">마이페이지</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그리드 앨범 섹션 -->
+    <div class="grid-container">
+        <div class="grid-item" ng-repeat="album in albums">
+            <img ng-src="{{album.imageFile}}" alt="{{album.imageFile}}">
+            <p>{{album.songName}}</p>
+            <button ng-click="tradeSong(album.songName)">거래하기</button>
+        </div>
+    </div>
+</body>
+</html>

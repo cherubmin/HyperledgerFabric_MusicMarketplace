@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="./login.js"></script>
+    <link rel="stylesheet" href="login.css"> 
+    <title>Signup</title>
+    <style type="text/css">
+        header{
+            background-color: lightgray;
+            font-size:20px;
+            padding:20px;
+        }
+        header, .form-group{
+            margin-bottom: 3%;
+        }
+        .form-group{
+            width:50%;
+        }
+        #body{
+            margin-left:3%;
+            margin-right:3%;
+        }
+        .form-control{
+            margin: 5px;
+            font-size: 12px; /* Adjust font size as needed */
+        }
+        .signup .form-control {
+            width: 70%;
+            display: inline-block;
+        }
+        label{
+            font-size:20px;
+        }
+        .brand {
+            text-align: center;
+        }
+        .brand .logo {
+            font-size: 3em;
+        }
+        .brand .heading h2 {
+            font-size: 2em;
+        }
+        .form-peice {
+            margin-top: 30px;
+        }
+        .switched {
+            display: none;
+        }
+        .active {
+            display: block !important;
+        }
+        .CTA {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 85%;
+        }
+        .CTA .btn, .CTA .switch {
+            margin-top: 0;
+        }
+        .CTA .switch {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body ng-app="application" ng-controller="AppCtrl">
+    <div class="container">
+        <section id="formHolder">
+            <div class="row">
+                <!-- Brand Box -->
+                <div class="col-sm-6 brand">
+                    <a href="#" class="logo">MR <span>.</span></a>
+                    <div class="heading">
+                        <h2>Marina</h2>
+                        <p>Your Right Choice</p>
+                    </div>
+                    <div class="success-msg">
+                        <p>Great! You are one of our members now</p>
+                        <a href="#" class="profile">Your Profile</a>
+                    </div>
+                </div>
+
+                <!-- Form Box -->
+                <div class="col-sm-6 form">
+                    <!-- Login Form -->
+                    <div class="login form-peice">
+                        <form class="login-form" ng-submit="loginAB()">
+                            <div class="form-group">
+                                <label for="loginemail">ID</label>
+                                <input type="text" name="userId" ng-model="login.userId" id="loginemail" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" name="userPw" ng-model="login.userPw" id="loginPassword" class="form-control" required>
+                            </div>
+                            <div class="CTA">
+                                <input type="submit" value="Login" class="btn btn-primary">
+                                <a href="#" class="switch">I'm New</a>
+                            </div>
+                            <h5 style="color:green;margin-top:2%" id="success_login">{{login_ab}}</h5>
+                        </form>
+                    </div><!-- End Login Form -->
+
+                    <!-- Signup Form -->
+                    <div class="signup form-peice switched">
+                        <form class="signup-form" ng-submit="registerAB()">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" name="username" id="name" ng-model="abstore.name" class="form-control" required>
+                                <span class="error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="registerID">ID</label>
+                                <input type="text" name="id" id="registerID" ng-model="abstore.id" class="form-control" required>
+                                <span class="error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="text" name="phone" id="phone" ng-model="abstore.phone_number" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="registerPassword">Password</label>
+                                <input type="password" name="password" id="registerPassword" ng-model="abstore.pw" class="form-control" required>
+                                <span class="error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="account_number">Account Number</label>
+                                <input type="text" name="account_number" id="account_number" ng-model="abstore.account_number" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="account_money">Account Money</label>
+                                <input type="text" name="account_money" id="account_money" ng-model="abstore.account_money" class="form-control" required>
+                            </div>
+                            <div class="CTA">
+                                <input type="submit" value="Signup Now" class="btn btn-primary">
+                                <a href="#" class="switch">I have an account</a>
+                            </div>
+                            <h5 style="color:green;margin-top:2%" id="success_register">{{register_ab}}</h5>
+                        </form>
+                    </div><!-- End Signup Form -->
+                </div>
+            </div>
+        </section>
+    </div>  
+</body>
+</html>

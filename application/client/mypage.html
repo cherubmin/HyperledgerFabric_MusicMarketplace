@@ -1,51 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-   <title>My Page</title>
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-   <script src="mypage.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="mypage.js"></script>
+    <link rel="stylesheet" href="mypage.css">
+</head>
+<body ng-app="application" ng-controller="MypageCtrl">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">MyPage</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
 
-   <style type="text/css">
-     header{
-       background-color: lightgray;
-       font-size:20px;
-       padding:20px;
-     }
-     header, .form-group{
-       margin-bottom: 3%;
-     }
-     .form-group{
-       width:50%;
-     }
-     #body{
-       margin-left:3%;
-       margin-right:3%;
-     }
-     .form-control{
-       margin: 8px;
-     }
-     label{
-       font-size:20px;
-     }
-   </style>
- </head>
- <body ng-app="application" ng-controller="MypageCtrl">
-    <header>
-      <div id="left_header">My Page</div>
-    </header>
-    <div id="body">
-      <div class="form-group">
-        <label>User Info</label>
-        <p>ID: {{user.id}}</p>
-        <p>Name: {{user.name}}</p>
-        <p>Poing: {{user.point}}</p>
-        <p>Phone Number: {{user.phone_number}}</p>
-        <p>Account Number: {{user.account_number}}</p>
-        <p>Account Money: {{user.account_money}}</p>
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-card js-profile-card">
+                    <div class="profile-card__img">
+                        <img ng-src="{{user.profilePicture}}" alt="프로필 사진">
+                    </div>
+                    <div class="profile-card__cnt js-profile-cnt">
+                        <div class="profile-card__name">{{user.name}}</div>
+                        <div class="profile-card__txt">전화번호: {{user.phone_number}}</div>                
+                    </div>
+                    <div class="profile-card-inf">
+                        <div class="profile-card-inf__item">
+                            <div class="profile-card-inf__title">{{user._id}}</div>
+                            <div class="profile-card-inf__txt">아이디</div>
+                        </div>
+                        <div class="profile-card-inf__item">
+                            <div class="profile-card-inf__title">{{user.account_number}}</div>
+                            <div class="profile-card-inf__txt">계좌번호</div>
+                        </div>
+                        <div class="profile-card-inf__item">
+                            <div class="profile-card-inf__title">{{user.account_money}}</div>
+                            <div class="profile-card-inf__txt">잔액</div>
+                        </div>
+                        <div class="profile-card-inf__item">
+                            <div class="profile-card-inf__title">{{user.point}}</div>
+                            <div class="profile-card-inf__txt">포인트</div>
+                        </div>
+                    </div>
+                    <div class="profile-card-ctr">
+                        <button class="profile-card__button button--blue js-message-btn" data-toggle="modal" data-target="#chargeModal">충전하기</button>
+                        <button class="profile-card__button button--orange" data-toggle="modal" data-target="#exchangeModal">환전하기</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="my-songs">
+                    <h3>나의 음원</h3>
+                    <div class="song-list">
+                        <div class="song" ng-repeat="song in songs">
+                            <img ng-src="{{song.cover}}" alt="음원 표지">
+                            <div class="song-details">
+                                <p>{{song.title}}</p>
+                                <span>거래금액: {{song.price}}원</span>
+                            </div>
+                        </div>
+                        <div class="song add-song" ng-click="goToAddSong()">
+                            <div class="add-song-icon">+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </body>
- </html>
+        
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">© 2024 MyPage. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- 충전 모달 -->
+    <div id="chargeModal" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- 모달 내용-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">충전하기</h4>
+                </div>
+                <div class="modal-body">
+                    <p>현재 보유 포인트: {{user.point}}</p>
+                    <p>연결 계좌: {{user.account_number}}</p>
+                    <p>잔액: {{user.account_money}}</p>
+                    <div class="form-group">
+                        <label for="chargeAmount">충전 금액:</label>
+                        <input type="number" class="form-control" id="chargeAmount" ng-model="chargeAmount" placeholder="충전 금액을 입력하세요">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="charge()">충전하기</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 환전 모달 -->
+    <div id="exchangeModal" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- 모달 내용-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">환전하기</h4>
+                </div>
+                <div class="modal-body">
+                    <p>현재 보유 포인트: {{user.point}}</p>
+                    <p>연결 계좌: {{user.account_number}}</p>
+                    <p>환전 가능 포인트: {{user.point}}</p>
+                    <div class="form-group">
+                        <label for="exchangeAmount">환전 금액:</label>
+                        <input type="number" class="form-control" id="exchangeAmount" ng-model="exchangeAmount" placeholder="환전 금액을 입력하세요">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="exchange()">환전하기</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

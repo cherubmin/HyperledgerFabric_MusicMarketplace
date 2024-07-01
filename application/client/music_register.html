@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>음원 등록 / 수정</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext');
+
+        html {
+            position: relative;
+            overflow-x: hidden !important;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            color: #324e63;
+            background: #f7f9fc;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4491a8;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            color: #324e63;
+        }
+
+        .form-control {
+            font-size: 16px;
+            border-radius: 6px;
+        }
+
+        .btn {
+            font-size: 18px;
+            background-color: #4491a8;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #367a90;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>음원 등록 / 수정</h2>
+        <form id="registerForm" action="http://localhost:8001/registerMusic" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>음원명</label>
+                <input class="form-control" type="text" name="songName" required>
+            </div>
+            <div class="form-group">
+                <label>장르</label>
+                <input class="form-control" type="text" name="genre" required>
+            </div>
+            <div class="form-group">
+                <label>곡 정보</label>
+                <textarea class="form-control" name="songInfo" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>가사</label>
+                <textarea class="form-control" name="lyrics" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>음원 파일</label>
+                <input class="form-control" type="file" name="audioFile" required>
+            </div>
+            <div class="form-group">
+                <label>이미지 파일</label>
+                <input class="form-control" type="file" name="imageFile" required>
+            </div>
+            <div class="form-group">
+                <label>판매 금액</label>
+                <input class="form-control" type="text" name="price" required>
+            </div>
+            <button type="submit" class="btn btn-primary">등록하기</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var userId = urlParams.get('userId');
+            if (!userId) {
+                alert('로그인이 필요합니다.');
+                window.location.href = 'login.html'; // 로그인 페이지로 리디렉션
+                return;
+            }
+    
+            var form = document.getElementById('registerForm');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // 폼의 기본 제출 동작을 막음
+    
+                var formData = new FormData(form);
+                formData.append('userID', userId); // 사용자 ID를 추가
+    
+                // 폼 데이터를 서버로 전송
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+                    console.log('등록 성공:', data);
+                    alert('음원이 성공적으로 등록되었습니다.');
+                    // 성공 후 원하는 동작 수행 (예: 메인 페이지로 리디렉션)
+                }).catch(function(error) {
+                    console.error('등록 실패:', error);
+                    alert('음원 등록에 실패했습니다.');
+                });
+            });
+        });
+    </script>
+    
+</body>
+
+</html>
